@@ -1,0 +1,113 @@
+databaseChangeLog:
+  - changeSet:
+      id: 0
+      author: senLoveYou
+      changes:
+        - createTable:
+            tableName: energy_consumption
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: device_class
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: device_type
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: device_name
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: id_in_group
+                  type: varchar(50)
+              - column:
+                  name: save_time
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: energy_kwh
+                  type: float
+
+  - changeSet:
+      id: 1
+      author: senLoveYou
+      changes:
+        - createTable:
+            tableName: telegram_users
+            columns:
+              - column:
+                  name: telegram_user_id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: telegram_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: username
+                  type: varchar(100)
+              - column:
+                  name: full_name
+                  type: varchar(100)
+
+  - changeSet:
+      id: 2
+      author: senLoveYou
+      changes:
+        - createTable:
+            tableName: report_access_log
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: telegram_user_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: report_name
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: access_time
+                  type: timestamp
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: parameters
+                  type: jsonb
+              - column:
+                  name: success
+                  type: boolean
+                  defaultValueBoolean: true
+        - addForeignKeyConstraint:
+            baseTableName: report_access_log
+            baseColumnNames: telegram_user_id
+            constraintName: fk_report_user
+            referencedTableName: telegram_users
+            referencedColumnNames: telegram_user_id
+            onDelete: CASCADE

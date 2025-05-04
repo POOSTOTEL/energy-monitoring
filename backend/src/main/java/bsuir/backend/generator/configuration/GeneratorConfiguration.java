@@ -1,6 +1,5 @@
 package bsuir.backend.generator.configuration;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
