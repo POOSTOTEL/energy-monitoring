@@ -1,0 +1,9 @@
+services:
+  postgres:
+    image: 'postgres:latest'
+    environment:
+      - 'POSTGRES_DB=energy_monitoring'
+      - 'POSTGRES_PASSWORD=root'
+      - 'POSTGRES_USER=user'
+    ports:
+      - '5432'
