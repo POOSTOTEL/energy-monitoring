@@ -3,6 +3,10 @@ server:
 spring:
   application:
     name: backend
+  web:
+    resources:
+      encoding:
+        charset: UTF-8
   datasource:
     url: jdbc:postgresql://localhost:5455/energy_monitoring
     username: user
@@ -23,7 +27,11 @@ spring:
     bot:
       name: energy_monitoring_1akBot
       token: 7556649009:AAFfD--f-fLcjIE29GNWM9b7jUrkL0z-neQ
-
+  thymeleaf:
+    enabled: true
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false
   report:
     server:
       base-url: http://your-report-server.com
