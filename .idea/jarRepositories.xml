@@ -2,9 +2,44 @@
 <project version="4">
   <component name="RemoteRepositoriesConfiguration">
     <remote-repository>
+      <option name="id" value="smib-maven-pub" />
+      <option name="name" value="smib-maven-pub" />
+      <option name="url" value="https://maven.repo-ci.sfera.inno.local/repository/smib-maven-pub/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="smmb-maven-pub" />
+      <option name="name" value="smmb-maven-pub" />
+      <option name="url" value="https://maven.repo-ci.sfera.inno.local/repository/smmb-maven-pub" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="central" />
       <option name="name" value="Central Repository" />
       <option name="url" value="https://repo.maven.apache.org/maven2" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="cott-maven-pub" />
+      <option name="name" value="cott-maven-pub" />
+      <option name="url" value="https://maven.repo-ci.sfera.inno.local/repository/cott-maven-pub" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="bcrd-maven" />
+      <option name="name" value="bcrd-maven" />
+      <option name="url" value="https://maven.repo-ci.sfera.inno.local/repository/bcrd-maven/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="smbi-maven-pub" />
+      <option name="name" value="smbi-maven-pub" />
+      <option name="url" value="https://maven.repo-ci.sfera.inno.local/repository/smbi-maven-pub/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="bcrd-maven-proxy-group" />
+      <option name="name" value="bcrd-maven-proxy-group" />
+      <option name="url" value="https://maven.repo-ci.sfera.inno.local/repository/bcrd-maven-proxy-group/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="bcrd-maven-lib" />
+      <option name="name" value="bcrd-maven-lib" />
+      <option name="url" value="https://maven.repo-ci.sfera.inno.local/repository/bcrd-maven-lib/" />
     </remote-repository>
     <remote-repository>
       <option name="id" value="central" />
@@ -15,6 +50,11 @@
       <option name="id" value="jboss.community" />
       <option name="name" value="JBoss Community repository" />
       <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="tsau-maven-pub" />
+      <option name="name" value="tsau-maven-pub" />
+      <option name="url" value="https://maven.repo-ci.sfera.inno.local/repository/tsau-maven-pub/" />
     </remote-repository>
   </component>
 </project>

@@ -37,7 +37,7 @@ public class ReportAccessLog {
      */
     @JoinColumn(name = "telegram_user_id", referencedColumnName = "telegram_user_id")
     @OneToOne(fetch = FetchType.EAGER)
-    private TelegramUser telegramUserId;
+    private TelegramUser telegramUser;
 
     /**
      * Тип отчёта

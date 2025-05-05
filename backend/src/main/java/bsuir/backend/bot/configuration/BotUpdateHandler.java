@@ -1,13 +1,12 @@
 package bsuir.backend.bot.configuration;
 
-import bsuir.backend.bot.model.ReportAccessLog;
-import bsuir.backend.bot.model.TelegramUser;
-import bsuir.backend.bot.repo.ReportAccessLogRepository;
 import bsuir.backend.bot.service.KeyboardService;
-import bsuir.backend.bot.service.UserAccessService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
+import bsuir.backend.generator.service.storage.TelegramUserStorageService;
+import bsuir.backend.generator.storage.entity.ReportAccessLog;
+import bsuir.backend.generator.storage.entity.TelegramUser;
+import bsuir.backend.generator.storage.repository.ReportAccessLogRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -17,24 +16,14 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Component
+@RequiredArgsConstructor
+@Slf4j
 public class BotUpdateHandler {
-    private static final Logger log = LoggerFactory.getLogger(BotUpdateHandler.class);
 
-    private final UserAccessService userAccessService;
+    private final TelegramUserStorageService userAccessService;
     private final KeyboardService keyboardService;
-    private final TelegramBotImpl telegramBot;
     private final ReportAccessLogRepository reportAccessLogRepository;
-
-    public BotUpdateHandler(UserAccessService userAccessService,
-                            KeyboardService keyboardService,
-                            TelegramBotImpl telegramBot,
-                            ReportAccessLogRepository reportAccessLogRepository) {
-        this.userAccessService = userAccessService;
-        this.keyboardService = keyboardService;
-        this.telegramBot = telegramBot;
-        this.reportAccessLogRepository = reportAccessLogRepository;
-    }
+    private TelegramBotImpl telegramBot;
 
     public void handle(Update update) {
         try {
@@ -64,12 +53,10 @@ public class BotUpdateHandler {
 
         if (callbackData.startsWith("REPORT_SELECT")) {
             sendReportTypeMenu(chatId);
-        }
-        else if (callbackData.startsWith("REPORT_TYPE:")) {
+        } else if (callbackData.startsWith("REPORT_TYPE:")) {
             String reportType = callbackData.split(":")[1];
             sendPeriodMenu(chatId, reportType);
-        }
-        else if (callbackData.startsWith("REPORT_PERIOD:")) {
+        } else if (callbackData.startsWith("REPORT_PERIOD:")) {
             String[] parts = callbackData.split(":");
             String reportType = parts[1];
             String period = parts[2];
@@ -109,15 +96,12 @@ public class BotUpdateHandler {
 
 
             ReportAccessLog logEntry = new ReportAccessLog();
-            logEntry.setUser(user);
+            logEntry.setTelegramUser(user);
             logEntry.setReportName(reportType);
             logEntry.setParameters("{\"period\":\"" + period + "\"}");
             logEntry.setAccessTime(LocalDateTime.now());
-            logEntry.setSuccess(true);
-
 
             reportAccessLogRepository.save(logEntry);
-
 
             SendMessage message = new SendMessage();
             message.setChatId(chatId);
@@ -142,6 +126,7 @@ public class BotUpdateHandler {
         }
     }
 
-
-
+    public void setTelegramBot(TelegramBotImpl telegramBot) {
+        this.telegramBot = telegramBot;
+    }
 }

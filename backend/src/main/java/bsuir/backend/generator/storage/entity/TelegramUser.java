@@ -31,7 +31,7 @@ public class TelegramUser {
      * Идентификатор пользователя Telegram
      */
     @Column(name = "telegram_id")
-    private String telegramId;
+    private Long telegramId;
 
     /**
      * Telegram тег пользователя

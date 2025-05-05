@@ -11,7 +11,7 @@ import java.util.List;
 @Service
 public class KeyboardService {
 
-    @Value("${report.server.base-url}")
+    @Value("${spring.report.server.base-url}")
     private String serverBaseUrl;
 
     public InlineKeyboardMarkup getMainMenu() {

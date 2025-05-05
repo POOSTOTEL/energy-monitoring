@@ -1,8 +1,8 @@
 package bsuir.backend.bot.service;
 
+import bsuir.backend.generator.storage.entity.EnergyConsumption;
+import bsuir.backend.generator.storage.repository.EnergyConsumptionRepository;
 import org.springframework.stereotype.Service;
-import bsuir.backend.bot.model.EnergyConsumption;
-import bsuir.backend.bot.repo.EnergyConsumptionRepository;
 import java.util.List;
 
 @Service
