@@ -99,11 +99,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: parameters
-                  type: jsonb
-              - column:
-                  name: success
-                  type: boolean
-                  defaultValueBoolean: true
+                  type: varchar(255)
         - addForeignKeyConstraint:
             baseTableName: report_access_log
             baseColumnNames: telegram_user_id
