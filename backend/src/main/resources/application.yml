@@ -1,20 +1,23 @@
-server:
-  port: 8081
 spring:
   application:
     name: backend
   datasource:
-    url: jdbc:postgresql://localhost:5455/energy_monitoring
-    username: user
-    password: root
+    url: jdbc:postgresql://localhost:5432/your_database_name
+    username: your_username
+    password: your_password
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: validate
     show-sql: true
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
   liquibase:
-    change-log: classpath:/db/changelog/changelog-master.yaml
+    change-log: classpath:db/changelog/db.changelog-master.xml
+
+  telegram:
+    bot:
+      name: energy_monitoring_1akBot
+      token: 7556649009:AAFfD--f-fLcjIE29GNWM9b7jUrkL0z-neQ
