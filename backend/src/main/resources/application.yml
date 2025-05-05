@@ -20,4 +20,8 @@ spring:
   telegram:
     bot:
       name: energy_monitoring_1akBot
-      token: 7556649009:AAFfD--f-fLcjIE29GNWM9b7jUrkL0z-neQ
+      token:
+
+  report:
+    server:
+      base-url: http://your-report-server.com
