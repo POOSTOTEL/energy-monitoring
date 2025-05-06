@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/styles/style.css">
+    <link rel="stylesheet" href="../static/styles/consumption.css">
+    <title>1AK</title>
+</head>
+<body>
+    <header class="header">
+        <img class="logo" src="../static/img/logo.png" alt="Логотип компании">
+        <p class="number">+375 (29) 664 67 03</p>
+    </header>
+    <main>
+        <section class="chart-container">
+            <h2 class="chart-title" th:text="'Потребление ' + ${deviceName}">Потребление 038 QF 1,26</h2>
+            <canvas id="consumptionChart"></canvas>
+        </section>
+        
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            document.addEventListener('DOMContentLoaded', function() {
+                const ctx = document.getElementById('consumptionChart').getContext('2d');
+                
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: /*[[${chartLabels}]]*/ ['00:00', '00:30', '01:00', '01:30', '02:00'],
+                        datasets: [{
+                            label: 'Потребление (kWh)',
+                            data: /*[[${consumptionData}]]*/ [27.42, 27.35, 24.89, 1.32, 0.00],
+                            borderColor: '#FF8C00',
+                            tension: 0.4,
+                            fill: false
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            }
+                        },
+                        scales: {
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'kWh'
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+            /*]]>*/
+        </script>
+    </main>
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-title">Юридическая информация</div>
+                <p>ООО «Белинвестторг»</p>
+                <p>Республика Беларусь, 225710, Брестская область,</p>
+                <p>г. Пинск, пр-д Калиновского, д. 2</p>
+                <p>УНП 200180562</p>
+            </div>
+            
+            <div class="footer-section">
+                <div class="footer-title">Регистрационные данные</div>
+                <p>Зарегистрировано в Едином гос регистре юр. лиц и ИП</p>
+                <p>25 мая 2001 года Брестским областным исполнительным комитетом</p>
+                <p>Свидетельство о регистрации Интернет-магазина 1AK.by</p>
+                <p>в Торговом реестре № 03-34/10 от 01.02.2013 г.</p>
+            </div>
+            
+            <div class="footer-section">
+                <div class="footer-title">Контакты</div>
+                <div class="footer-contacts">
+                    <p>Лицо, уполномоченное продавцом рассматривать обращение покупателей:</p>
+                    <p>Беланович Кирилл Александрович</p>
+                    <p>тел. +375 29 649-68-78</p>
+                    <p>электронная почта k.belanovich@1ak.by</p>
+                    <p>Книги замечаний и предложений находятся по адресам магазинов.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

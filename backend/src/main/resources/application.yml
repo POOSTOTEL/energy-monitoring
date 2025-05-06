@@ -3,11 +3,24 @@ server:
 spring:
   application:
     name: backend
+  web:
+    resources:
+      encoding:
+        charset: UTF-8
+  security:
+    enabled: false
   datasource:
     url: jdbc:postgresql://localhost:5455/energy_monitoring
     username: user
     password: root
     driver-class-name: org.postgresql.Driver
+
+  logging:
+    level:
+      org:
+        thymeleaf: DEBUG
+        springframework:
+          web: DEBUG
   jpa:
     hibernate:
       ddl-auto: none
@@ -23,7 +36,11 @@ spring:
     bot:
       name: energy_monitoring_1akBot
       token: ${BOT_TOKEN}
-
+  thymeleaf:
+    enabled: true
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false
   report:
     server:
       base-url: http://localhost:8081

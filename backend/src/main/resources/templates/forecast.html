@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/styles/style.css">
+    <link rel="stylesheet" href="../static/styles/forecast.css">
+    <title>1AK</title>
+</head>
+<body>
+    <header class="header">
+        <img class="logo" src="../static/img/logo.png" alt="Логотип компании">
+        <p class="number">+375 (29) 664 67 03</p>
+    </header>
+    <main>
+        <section class="consumption-forecast">
+            <h1>Прогнозирование потребления</h1>
+            <div class="forecast-card">
+                <h2>Прогноз на <span th:text="${forecast.forDate}">завтра</span>:</h2>
+                <div class="forecast-details">
+                    <p class="consumption-value">
+                        • Ожидаемый расход: 
+                        <span th:text="${forecast.expectedConsumption} + '±' + ${forecast.deviation} + ' kWh'">
+                            7.2±0.8 kWh
+                        </span>
+                    </p>
+                    <p class="recommendation">
+                        • Рекомендация: 
+                        <span th:text="'отключить с ' + ${forecast.recommendation.startTime} + ' до ' + ${forecast.recommendation.endTime}">
+                            отключить с 1:00 до 3:00
+                        </span>
+                    </p>
+                </div>
+                <div class="visualization">
+                    <div class="consumption-graph">
+                        <div th:each="hour : ${forecast.hourlyConsumption}" 
+                             class="graph-bar" 
+                             th:classappend="${hour.recommendedToDisable} ? 'highlight'" 
+                             th:style="'height:' + ${hour.consumptionPercentage} + '%;'">
+                        </div>
+                    </div>
+                    <div class="time-labels">
+                        <span th:each="label : ${forecast.timeLabels}" th:text="${label}">0:00</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-title">Юридическая информация</div>
+                <p>ООО «Белинвестторг»</p>
+                <p>Республика Беларусь, 225710, Брестская область,</p>
+                <p>г. Пинск, пр-д Калиновского, д. 2</p>
+                <p>УНП 200180562</p>
+            </div>
+            
+            <div class="footer-section">
+                <div class="footer-title">Регистрационные данные</div>
+                <p>Зарегистрировано в Едином гос регистре юр. лиц и ИП</p>
+                <p>25 мая 2001 года Брестским областным исполнительным комитетом</p>
+                <p>Свидетельство о регистрации Интернет-магазина 1AK.by</p>
+                <p>в Торговом реестре № 03-34/10 от 01.02.2013 г.</p>
+            </div>
+            
+            <div class="footer-section">
+                <div class="footer-title">Контакты</div>
+                <div class="footer-contacts">
+                    <p>Лицо, уполномоченное продавцом рассматривать обращение покупателей:</p>
+                    <p>Беланович Кирилл Александрович</p>
+                    <p>тел. +375 29 649-68-78</p>
+                    <p>электронная почта k.belanovich@1ak.by</p>
+                    <p>Книги замечаний и предложений находятся по адресам магазинов.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

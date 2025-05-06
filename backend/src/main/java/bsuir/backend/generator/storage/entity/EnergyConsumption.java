@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Builder
-@Table(schema = "public", name = "energy_consuption")
+@Table(schema = "public", name = "energy_consumption")
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor

@@ -1,0 +1,96 @@
+/* Стили для отчёта */
+.report-section {
+    padding: 30px 40px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    margin: 20px 0;
+}
+
+.report-header {
+    color: #333;
+    border-bottom: 2px solid #FF8C00;
+    padding-bottom: 15px;
+    margin-bottom: 30px;
+}
+
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.metric-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #eee;
+    transition: transform 0.3s ease;
+}
+
+.metric-card:hover {
+    transform: translateY(-5px);
+}
+
+.metric-card.highlight {
+    border-color: #FF8C00;
+    background: #fff9f2;
+}
+
+.metric-card.economic {
+    border-color: #4CAF50;
+    background: #f4fff5;
+}
+
+.metric-value {
+    font-size: 2.2em;
+    font-weight: 700;
+    color: #333;
+    margin: 15px 0;
+}
+
+.metric-change {
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+.consumer-list {
+    margin-top: 15px;
+}
+
+.consumer-item {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    margin: 8px 0;
+    background: #f8f8f8;
+    border-radius: 6px;
+}
+
+.rank {
+    width: 25px;
+    height: 25px;
+    background: #FF8C00;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+}
+
+.consumption {
+    margin-left: auto;
+    font-weight: bold;
+    color: #666;
+}
+
+@media (max-width: 768px) {
+    .report-section {
+        padding: 20px;
+    }
+    
+    .metric-value {
+        font-size: 1.8em;
+    }
+}
