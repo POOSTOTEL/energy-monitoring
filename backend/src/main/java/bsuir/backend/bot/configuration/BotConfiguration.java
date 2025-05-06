@@ -6,6 +6,9 @@ import bsuir.backend.generator.storage.repository.ReportAccessLogRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.telegram.telegrambots.meta.TelegramBotsApi;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 @Configuration
 public class BotConfiguration {
@@ -22,6 +25,13 @@ public class BotConfiguration {
     }
 
     @Bean
+    public TelegramBotsApi telegramBotsApi(TelegramBotImpl telegramBot) throws TelegramApiException {
+        TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
+        botsApi.registerBot(telegramBot);
+        return botsApi;
+    }
+
+    @Bean
     public BotUpdateHandler botUpdateHandler(
             TelegramUserStorageService userAccessService,
             KeyboardService keyboardService,
@@ -29,5 +39,4 @@ public class BotConfiguration {
     ) {
         return new BotUpdateHandler(userAccessService, keyboardService, reportAccessLogRepository);
     }
-
 }

@@ -35,7 +35,7 @@ spring:
   telegram:
     bot:
       name: energy_monitoring_1akBot
-      token: ${BOT_TOKEN}
+      token: 7556649009:AAFfD--f-fLcjIE29GNWM9b7jUrkL0z-neQ
   thymeleaf:
     enabled: true
     prefix: classpath:/templates/

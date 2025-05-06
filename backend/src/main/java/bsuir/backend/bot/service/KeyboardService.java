@@ -73,7 +73,7 @@ public class KeyboardService {
     }
 
     public String generateReportUrl(String date) {
-        return serverBaseUrl + "/api/report/?date=" + date;
+        return serverBaseUrl + "/activity?date=" + date;
     }
 
     public SendMessage requestDateInput(Long chatId) {
