@@ -22,8 +22,8 @@ spring:
   telegram:
     bot:
       name: energy_monitoring_1akBot
-      token:
+      token: ${BOT_TOKEN}
 
   report:
     server:
-      base-url: http://your-report-server.com
+      base-url: http://localhost:8081

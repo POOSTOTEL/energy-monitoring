@@ -13,12 +13,18 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @RequiredArgsConstructor
 @Slf4j
 public class BotUpdateHandler {
+
+    private final Map<Long, String> reportTypeCache = new ConcurrentHashMap<>();
+    private final Map<Long, Boolean> awaitingDateInput = new ConcurrentHashMap<>();
 
     private final TelegramUserStorageService userAccessService;
     private final KeyboardService keyboardService;
@@ -41,9 +47,15 @@ public class BotUpdateHandler {
         Long userId = update.getMessage().getFrom().getId();
         if (!userAccessService.isAuthorized(userId)) return;
 
+        Long chatId = update.getMessage().getChatId();
         String text = update.getMessage().getText();
+
         if ("/start".equals(text)) {
-            sendMainMenu(update.getMessage().getChatId());
+            reportTypeCache.remove(chatId);
+            awaitingDateInput.remove(chatId);
+            sendMainMenu(chatId);
+        } else if (Boolean.TRUE.equals(awaitingDateInput.get(chatId))) {
+            handleDateInput(chatId, text);
         }
     }
 
@@ -51,16 +63,13 @@ public class BotUpdateHandler {
         String callbackData = update.getCallbackQuery().getData();
         Long chatId = update.getCallbackQuery().getMessage().getChatId();
 
-        if (callbackData.startsWith("REPORT_SELECT")) {
+        if ("REPORT_SELECT".equals(callbackData)) {
             sendReportTypeMenu(chatId);
         } else if (callbackData.startsWith("REPORT_TYPE:")) {
             String reportType = callbackData.split(":")[1];
-            sendPeriodMenu(chatId, reportType);
-        } else if (callbackData.startsWith("REPORT_PERIOD:")) {
-            String[] parts = callbackData.split(":");
-            String reportType = parts[1];
-            String period = parts[2];
-            sendReportUrl(chatId, reportType, period);
+            reportTypeCache.put(chatId, reportType); // Сохраняем тип отчета
+            awaitingDateInput.put(chatId, true); // Устанавливаем флаг ожидания даты
+            sendMessage(keyboardService.requestDateInput(chatId));
         }
     }
 
@@ -80,33 +89,55 @@ public class BotUpdateHandler {
         sendMessage(message);
     }
 
-    private void sendPeriodMenu(Long chatId, String reportType) {
-        SendMessage message = new SendMessage();
-        message.setChatId(chatId);
-        message.setText("Выберите период:");
-        message.setReplyMarkup(keyboardService.getPeriodMenu(reportType));
-        sendMessage(message);
+
+
+    private void sendMessage(SendMessage message) {
+        try {
+            telegramBot.execute(message);
+        } catch (TelegramApiException e) {
+            log.error("Error sending message", e);
+        }
     }
 
-    private void sendReportUrl(Long chatId, String reportType, String period) {
+    private void handleDateInput(Long chatId, String dateInput) {
+        if (isValidDate(dateInput)) {
+            String reportType = reportTypeCache.get(chatId);
+            String url = keyboardService.generateReportUrl(dateInput);
+            sendReportWithDate(chatId, reportType, url);
+            reportTypeCache.remove(chatId);
+            awaitingDateInput.remove(chatId);
+        } else {
+            SendMessage errorMsg = new SendMessage();
+            errorMsg.setChatId(chatId);
+            errorMsg.setText("Неверный формат даты. Введите дату в формате yyyy-MM-dd:");
+            sendMessage(errorMsg);
+        }
+    }
+
+    private boolean isValidDate(String date) {
         try {
-            String url = keyboardService.generateReportUrl(reportType, period);
+            LocalDate.parse(date);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
+    private void sendReportWithDate(Long chatId, String reportType, String url) {
+        try {
             TelegramUser user = userAccessService.findByTelegramId(chatId);
-
 
             ReportAccessLog logEntry = new ReportAccessLog();
             logEntry.setTelegramUser(user);
             logEntry.setReportName(reportType);
-            logEntry.setParameters("{\"period\":\"" + period + "\"}");
+            logEntry.setParameters("{\"date\":\"" + url.split("date=")[1] + "\"}");
             logEntry.setAccessTime(LocalDateTime.now());
 
             reportAccessLogRepository.save(logEntry);
 
             SendMessage message = new SendMessage();
             message.setChatId(chatId);
-            message.setText("Отчет готов: " + url);
-
+            message.setText("Отчет " + reportType + " готов:");
 
             InlineKeyboardButton openBtn = new InlineKeyboardButton("Открыть");
             openBtn.setUrl(url);
@@ -115,14 +146,6 @@ public class BotUpdateHandler {
             telegramBot.execute(message);
         } catch (Exception e) {
             log.error("Error generating report URL", e);
-        }
-    }
-
-    private void sendMessage(SendMessage message) {
-        try {
-            telegramBot.execute(message);
-        } catch (TelegramApiException e) {
-            log.error("Error sending message", e);
         }
     }
 

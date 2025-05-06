@@ -2,6 +2,7 @@ package bsuir.backend.bot.service;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
@@ -71,7 +72,16 @@ public class KeyboardService {
         return new InlineKeyboardMarkup(keyboard);
     }
 
-    public String generateReportUrl(String reportType, String period) {
-        return serverBaseUrl + "/reports/" + reportType.toLowerCase() + "?period=" + period.toLowerCase();
+    public String generateReportUrl(String date) {
+        return serverBaseUrl + "/api/report/?date=" + date;
     }
+
+    public SendMessage requestDateInput(Long chatId) {
+        SendMessage message = new SendMessage();
+        message.setChatId(chatId);
+        message.setText("Введите дату в формате yyyy-MM-dd (например: 2024-04-01)");
+        return message;
+    }
+
+
 }
