@@ -1,0 +1,83 @@
+/* Activity Reports Styles */
+.activity-reports {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 30px;
+    align-items: flex-end;
+}
+
+.date-selector, .time-range {
+    display: flex;
+    flex-direction: column;
+    min-width: 200px;
+}
+
+.controls label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+.controls input, .controls select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.refresh-btn {
+    padding: 10px 20px;
+    background-color: #FF8C00;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.refresh-btn:hover {
+    background-color: #e67e00;
+}
+
+.summary-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.summary-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.summary-card h3 {
+    margin-top: 0;
+    color: #444;
+    font-size: 18px;
+}
+
+.summary-card .value {
+    font-size: 28px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.summary-card .trend, .summary-card .time {
+    color: #666;
+    font-size: 14px;
+}
+
+.trend.up {
+    color: #d9534f;
+}

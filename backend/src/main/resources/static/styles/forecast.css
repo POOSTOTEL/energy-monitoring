@@ -1,0 +1,97 @@
+/* Add these styles to your existing style.css */
+
+main {
+    flex: 1;
+    padding: 30px 0;
+}
+
+.consumption-forecast {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+}
+
+.consumption-forecast h1 {
+    color: #333;
+    margin-bottom: 25px;
+    font-size: 28px;
+}
+
+.forecast-card {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 20px;
+    border-left: 5px solid #FF8C00;
+}
+
+.forecast-card h2 {
+    margin-top: 0;
+    color: #444;
+    font-size: 22px;
+}
+
+.forecast-details {
+    margin-bottom: 25px;
+}
+
+.consumption-value span {
+    font-weight: bold;
+    color: #FF8C00;
+}
+
+.recommendation span {
+    font-weight: bold;
+    color: #d9534f;
+}
+
+.visualization {
+    margin-top: 20px;
+}
+
+.consumption-graph {
+    display: flex;
+    height: 200px;
+    align-items: flex-end;
+    gap: 15px;
+    padding: 0 20px;
+    border-bottom: 2px solid #ddd;
+    margin-bottom: 10px;
+}
+
+.graph-bar {
+    flex: 1;
+    background-color: #5bc0de;
+    border-radius: 5px 5px 0 0;
+    min-width: 30px;
+    position: relative;
+    transition: height 0.3s ease;
+}
+
+.graph-bar.highlight {
+    background-color: #d9534f;
+}
+
+.time-labels {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
+    color: #666;
+    font-size: 12px;
+}
+
+@media (max-width: 768px) {
+    .consumption-forecast {
+        padding: 20px;
+    }
+    
+    .consumption-graph {
+        gap: 8px;
+    }
+    
+    .graph-bar {
+        min-width: 20px;
+    }
+}

@@ -7,11 +7,20 @@ spring:
     resources:
       encoding:
         charset: UTF-8
+  security:
+    enabled: false
   datasource:
     url: jdbc:postgresql://localhost:5455/energy_monitoring
     username: user
     password: root
     driver-class-name: org.postgresql.Driver
+
+  logging:
+    level:
+      org:
+        thymeleaf: DEBUG
+        springframework:
+          web: DEBUG
   jpa:
     hibernate:
       ddl-auto: none

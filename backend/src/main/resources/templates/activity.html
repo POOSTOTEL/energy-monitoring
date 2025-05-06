@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../static/styles/style.css">
-    <link rel="stylesheet" href="../static/styles/activity.css">
+    <link rel="stylesheet" th:href="@{/styles/style.css}">
+    <link rel="stylesheet" th:href="@{/styles/activity.css}">
     <title>1AK - Отчеты о статусах активности</title>
 </head>
 <body>
     <header class="header">
-        <img class="logo" src="../static/img/logo.png" alt="Логотип компании">
+        <img class="logo" th:src="@{/img/logo.png}" alt="Логотип компании">
         <p class="number">+375 (29) 664 67 03</p>
     </header>
     <main>
@@ -18,7 +18,8 @@
             <section class="controls">
                 <div class="date-selector">
                     <label for="report-date">Выберите дату:</label>
-                    <input type="date" id="report-date" th:value="${#dates.format(reportDate, 'yyyy-MM-dd')}">
+                    <input type="date" id="report-date" th:value="${#dates.format(reportDate, 'yyyy-MM-dd')}"
+                           onchange="updateReportDate()">
                 </div>
                 <div class="time-range">
                     <label>Временной диапазон:</label>
@@ -32,7 +33,7 @@
                 </div>
                 <button class="refresh-btn">Обновить данные</button>
             </section>
-            
+
             <section class="summary-cards">
                 <div class="summary-card total">
                     <h3>Общее потребление</h3>
@@ -50,14 +51,14 @@
                     <div class="time" th:text="'в ' + ${lowConsumption.time}">в 2:00-2:30</div>
                 </div>
             </section>
-            
+
             <section class="consumption-graph">
-                <h2 th:text="'График потребления за ' + ${#dates.format(reportDate, 'dd.MM.yyyy')}">График потребления за 01.04.2025</h2>
-                <div class="graph-container">
+                <h2 th:text="'График потребления за ' + ${#temporals.format(reportDate, 'dd.MM.yyyy')}"/>
+                    <div class="graph-container">
                     <canvas id="consumptionChart"></canvas>
                 </div>
             </section>
-            
+
             <section class="detailed-report">
                 <h2>Детальный отчет по устройствам</h2>
                 <div class="table-container">
@@ -66,27 +67,19 @@
                             <tr>
                                 <th>Время</th>
                                 <th th:each="device : ${devices}" th:text="${device.name}">038 QF 1,26</th>
-                                <th>Статус</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr th:each="record : ${consumptionRecords}">
                                 <td th:text="${#temporals.format(record.time, 'HH:mm')}">0:00</td>
-                                <td th:each="consumption : ${record.consumptions}" 
+                                <td th:each="consumption : ${record.consumptions}"
                                     th:text="${consumption.value} + ' kWh'">27.42 kWh</td>
-                                <td>
-                                    <span th:switch="${record.status}" class="status">
-                                        <span th:case="'ACTIVE'" class="active">Активен</span>
-                                        <span th:case="'PARTIAL'" class="warning">Частично активен</span>
-                                        <span th:case="'INACTIVE'" class="inactive">Неактивен</span>
-                                    </span>
-                                </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </section>
-            
+
             <section class="export-section">
                 <button class="export-btn" th:onclick="'exportData(\'excel\')'">Экспорт в Excel</button>
                 <button class="export-btn" th:onclick="'exportData(\'pdf\')'">Экспорт в PDF</button>
@@ -103,7 +96,7 @@
                 <p>г. Пинск, пр-д Калиновского, д. 2</p>
                 <p>УНП 200180562</p>
             </div>
-            
+
             <div class="footer-section">
                 <div class="footer-title">Регистрационные данные</div>
                 <p>Зарегистрировано в Едином гос регистре юр. лиц и ИП</p>
@@ -111,7 +104,7 @@
                 <p>Свидетельство о регистрации Интернет-магазина 1AK.by</p>
                 <p>в Торговом реестре № 03-34/10 от 01.02.2013 г.</p>
             </div>
-            
+
             <div class="footer-section">
                 <div class="footer-title">Контакты</div>
                 <div class="footer-contacts">
@@ -129,27 +122,33 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script th:inline="javascript">
         /*<![CDATA[*/
+        function updateReportDate() {
+            const selectedDate = document.getElementById('report-date').value;
+            const currentUrl = window.location.href.split('?')[0];
+            const newUrl = currentUrl + '?date=' + selectedDate;
+
+            // Перенаправляем на новый URL с выбранной датой
+            window.location.href = newUrl;
+        }
+
+        // Функция для экспорта данных
         function exportData(format) {
             const date = document.getElementById('report-date').value;
             window.location.href = '/export/' + format + '?date=' + date;
         }
-        
+
+        function exportData(format) {
+            const date = document.getElementById('report-date').value;
+            window.location.href = '/export/' + format + '?date=' + date;
+        }
+
         // Инициализация графика с динамическими данными
         const ctx = document.getElementById('consumptionChart').getContext('2d');
         const consumptionChart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: /*[[${chartLabels}]]*/ ['0:00', '0:30', '1:00', '1:30', '2:00', '2:30', '3:00'],
-                datasets: /*[[${chartDatasets}]]*/ [
-                    {
-                        label: '038 QF 1,26',
-                        data: [27.42, 27.35, 24.89, 1.32, 0, 0, 0],
-                        borderColor: '#FF8C00',
-                        backgroundColor: 'rgba(255, 140, 0, 0.1)',
-                        tension: 0.1,
-                        fill: true
-                    }
-                ]
+                labels: /*[[${chartLabels}]]*/ [],
+                datasets: /*[[${chartDatasets}]]*/ []
             },
             options: {
                 responsive: true,
